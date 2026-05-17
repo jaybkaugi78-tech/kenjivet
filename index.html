@@ -204,16 +204,6 @@
 </head>
 <body>
 
-<!-- EmailJS -->
-<script type="text/javascript"
-  src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
-</script>
-<script type="text/javascript">
-  emailjs.init("2jxIK_xMfe3X2IXO2");
-  const EMAILJS_SERVICE_ID  = 'service_y8tnwdi';
-  const EMAILJS_TEMPLATE_ID = 'template_k3xlsgl';
-</script>
-
 <nav>
   <div class="nav-logo">
     <div class="nav-logo-icon">🐾</div>
@@ -460,14 +450,17 @@ async function sendMessage() {
   btn.textContent = 'Sending...';
   btn.disabled = true;
   try {
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-  from_name: name,
-  reply_to: email,
-  subject: subject || 'New message from website',
-  message: message
-},'2jxIK_xMfe3X2IXO2');
-    document.getElementById('cf-success').classList.add('show');
-    btn.style.display = 'none';
+    const res = await fetch('https://formspree.io/f/mjgzbzjk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, subject, message })
+    });
+    if (res.ok) {
+      document.getElementById('cf-success').classList.add('show');
+      btn.style.display = 'none';
+    } else {
+      throw new Error('Failed');
+    }
   } catch (err) {
     alert('Could not send. Please email us directly at drkennedymurimi1@gmail.com');
     btn.textContent = 'Send Message →';
@@ -480,13 +473,20 @@ async function bookAppointment() {
   const phone = document.getElementById('appt-phone').value.trim();
   if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
   try {
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-  from_name: name,
-  reply_to: phone,
-  subject: `New Booking — ${document.getElementById('appt-species').value || 'Animal'}`,
-  message: `Name: ${name}\nPhone: ${phone}\nAnimal: ${document.getElementById('appt-species').value}\nService: ${document.getElementById('appt-service').value}\nDate: ${document.getElementById('appt-date').value}\nTime: ${document.getElementById('appt-time').value}\nLocation: ${document.getElementById('appt-location').value}\nNotes: ${document.getElementById('appt-notes').value || 'None'}`
-},'2jxIK_xMfe3X2IXO2');
-  } catch (e) { /* silent — confirm anyway, Kenji follows up by phone */ }
+    const res = await fetch('https://formspree.io/f/mjgzbzjk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name, phone,
+        animal: document.getElementById('appt-species').value,
+        service: document.getElementById('appt-service').value,
+        date: document.getElementById('appt-date').value,
+        time: document.getElementById('appt-time').value,
+        location: document.getElementById('appt-location').value,
+        notes: document.getElementById('appt-notes').value || 'None'
+      })
+    });
+  } catch (e) { /* silent */ }
   document.getElementById('appt-success').classList.add('show');
   document.querySelector('.appt-form button').style.display = 'none';
 }
