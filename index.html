@@ -461,9 +461,11 @@ async function sendMessage() {
   btn.disabled = true;
   try {
     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      from_name: name, reply_to: email,
-      subject: subject || 'New message from website', message
-    });
+  from_name: name,
+  reply_to: email,
+  subject: subject || 'New message from website',
+  message: message
+},'2jxIK_xMfe3X2IXO2');
     document.getElementById('cf-success').classList.add('show');
     btn.style.display = 'none';
   } catch (err) {
@@ -479,10 +481,11 @@ async function bookAppointment() {
   if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
   try {
     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      from_name: name, reply_to: phone,
-      subject: `New Booking — ${document.getElementById('appt-species').value || 'Animal'} · ${document.getElementById('appt-service').value || 'Service TBD'}`,
-      message: `Name: ${name}\nPhone: ${phone}\nAnimal: ${document.getElementById('appt-species').value}\nService: ${document.getElementById('appt-service').value}\nDate: ${document.getElementById('appt-date').value}\nTime: ${document.getElementById('appt-time').value}\nLocation: ${document.getElementById('appt-location').value}\nNotes: ${document.getElementById('appt-notes').value || 'None'}`
-    });
+  from_name: name,
+  reply_to: phone,
+  subject: `New Booking — ${document.getElementById('appt-species').value || 'Animal'}`,
+  message: `Name: ${name}\nPhone: ${phone}\nAnimal: ${document.getElementById('appt-species').value}\nService: ${document.getElementById('appt-service').value}\nDate: ${document.getElementById('appt-date').value}\nTime: ${document.getElementById('appt-time').value}\nLocation: ${document.getElementById('appt-location').value}\nNotes: ${document.getElementById('appt-notes').value || 'None'}`
+},'2jxIK_xMfe3X2IXO2');
   } catch (e) { /* silent — confirm anyway, Kenji follows up by phone */ }
   document.getElementById('appt-success').classList.add('show');
   document.querySelector('.appt-form button').style.display = 'none';
