@@ -501,6 +501,56 @@
     </div>
   </div>
 
+  <!-- Animal Quotes -->
+<section style="padding: 60px 5%; text-align: center; background: var(--green-dark);">
+  <div style="position: relative; min-height: 160px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div id="quote-display" style="transition: opacity 0.6s ease;">
+      <div style="font-size: 48px; margin-bottom: 12px;" id="quote-emoji">🐾</div>
+      <p id="quote-text" style="font-size: 18px; font-style: italic; color: var(--cream); line-height: 1.7; max-width: 520px; margin: 0 auto 12px;"></p>
+      <p id="quote-author" style="font-size: 13px; color: var(--gold); letter-spacing: 1px; text-transform: uppercase;"></p>
+    </div>
+  </div>
+  <div style="display: flex; gap: 8px; justify-content: center; margin-top: 1.5rem;" id="dots"></div>
+</section>
+
+<script>
+const quotes = [
+  { emoji: "🐕", text: "Until one has loved an animal, a part of one's soul remains unawakened.", author: "Anatole France" },
+  { emoji: "🐘", text: "The greatness of a nation can be judged by the way its animals are treated.", author: "Mahatma Gandhi" },
+  { emoji: "🦁", text: "Animals are such agreeable friends — they ask no questions; they pass no criticisms.", author: "George Eliot" },
+  { emoji: "🐴", text: "The love for all living creatures is the most noble attribute of man.", author: "Charles Darwin" },
+  { emoji: "🦜", text: "Animals share with us the privilege of having a soul.", author: "Pythagoras" }
+];
+let current = 0; let timer;
+const textEl = document.getElementById('quote-text');
+const authorEl = document.getElementById('quote-author');
+const emojiEl = document.getElementById('quote-emoji');
+const display = document.getElementById('quote-display');
+const dotsEl = document.getElementById('dots');
+function renderDots() {
+  dotsEl.innerHTML = '';
+  quotes.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.style.cssText = `width:8px;height:8px;border-radius:50%;background:${i === current ? 'var(--gold)' : 'rgba(245,240,232,0.3)'};cursor:pointer;transition:background 0.3s;`;
+    dot.onclick = () => { clearInterval(timer); showQuote(i); startTimer(); };
+    dotsEl.appendChild(dot);
+  });
+}
+function showQuote(index) {
+  display.style.opacity = '0';
+  setTimeout(() => {
+    current = index;
+    textEl.textContent = `"${quotes[current].text}"`;
+    authorEl.textContent = `— ${quotes[current].author}`;
+    emojiEl.textContent = quotes[current].emoji;
+    display.style.opacity = '1';
+    renderDots();
+  }, 300);
+}
+function startTimer() { timer = setInterval(() => { showQuote((current + 1) % quotes.length); }, 4000); }
+showQuote(0); startTimer();
+</script>
+
   <!-- Testimonials -->
   <section class="home-testi">
     <div class="home-testi-header">
