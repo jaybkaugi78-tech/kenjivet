@@ -860,7 +860,7 @@ async function sendMessage() {
   btn.textContent = 'Sending...';
   btn.disabled = true;
   try {
-    const res = await fetch('https://formspree.io/f/mjgzbzjk', {
+    const res = await fetch('https://formspree.io/f/xbdblqnn', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, subject, message })
@@ -882,7 +882,7 @@ async function bookAppointment() {
   const phone = document.getElementById('appt-phone').value.trim();
   if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
   try {
-    await fetch('https://formspree.io/f/mjgzbzjk', {
+    await fetch('https://formspree.io/f/xbdblqnn', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
