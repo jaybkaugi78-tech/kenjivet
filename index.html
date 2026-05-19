@@ -850,52 +850,25 @@ function closeMobileMenu() {
 }
 
 // ── CONTACT FORM ────────────────────────────────────
-async function sendMessage() {
-  const name    = document.getElementById('cf-name').value.trim();
-  const email   = document.getElementById('cf-email').value.trim();
+function sendMessage() {
+  const name = document.getElementById('cf-name').value.trim();
+  const email = document.getElementById('cf-email').value.trim();
   const subject = document.getElementById('cf-subject').value.trim();
   const message = document.getElementById('cf-message').value.trim();
   if (!name || !message) { alert('Please fill in your name and message.'); return; }
-  const btn = document.getElementById('cf-btn');
-  btn.textContent = 'Sending...';
-  btn.disabled = true;
-  try {
-    const res = await fetch('https://formspree.io/f/xbdblqnn', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, subject, message })
-    });
-    if (res.ok) {
-      document.getElementById('cf-success').classList.add('show');
-      btn.style.display = 'none';
-    } else { throw new Error('Failed'); }
-  } catch (err) {
-    alert('Could not send. Please email us directly at drkennedymurimi1@gmail.com');
-    btn.textContent = 'Send Message →';
-    btn.disabled = false;
-  }
+  const waMessage = `🐾 *New Message — Kenji Vet Services*\n\n*Name:* ${name}\n*Email:* ${email}\n*Subject:* ${subject}\n*Message:* ${message}`;
+  window.open(`https://wa.me/254701973149?text=${encodeURIComponent(waMessage)}`, '_blank');
+  document.getElementById('cf-success').classList.add('show');
+  document.getElementById('cf-btn').style.display = 'none';
 }
 
 // ── APPOINTMENT FORM ─────────────────────────────────
-async function bookAppointment() {
-  const name  = document.getElementById('appt-name').value.trim();
+function bookAppointment() {
+  const name = document.getElementById('appt-name').value.trim();
   const phone = document.getElementById('appt-phone').value.trim();
   if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
-  try {
-    await fetch('https://formspree.io/f/xbdblqnn', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name, phone,
-        animal:   document.getElementById('appt-species').value,
-        service:  document.getElementById('appt-service').value,
-        date:     document.getElementById('appt-date').value,
-        time:     document.getElementById('appt-time').value,
-        location: document.getElementById('appt-location').value,
-        notes:    document.getElementById('appt-notes').value || 'None'
-      })
-    });
-  } catch (e) { /* silent */ }
+  const message = `🐾 *New Booking Request — Kenji Vet Services*\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Animal:* ${document.getElementById('appt-species').value}\n*Service:* ${document.getElementById('appt-service').value}\n*Date:* ${document.getElementById('appt-date').value}\n*Time:* ${document.getElementById('appt-time').value}\n*Location:* ${document.getElementById('appt-location').value}\n*Notes:* ${document.getElementById('appt-notes').value || 'None'}`;
+  window.open(`https://wa.me/254701973149?text=${encodeURIComponent(message)}`, '_blank');
   document.getElementById('appt-success').classList.add('show');
   document.querySelector('.appt-form button').style.display = 'none';
 }
