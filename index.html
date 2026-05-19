@@ -188,9 +188,6 @@
   .animal-info-card h3 { font-family:'Playfair Display',serif; font-size:19px; color:var(--text-dark); margin-bottom:10px; }
   .animal-info-card p { font-size:14px; line-height:1.7; color:var(--text-light); font-weight:300; }
   .animal-tag { display:inline-block; font-size:11px; background:var(--cream); color:var(--green-accent); padding:4px 10px; border-radius:20px; margin-bottom:12px; font-weight:500; letter-spacing:0.5px; text-transform:uppercase; }
-
-  /* ── SYMPTOM CHECKER PAGE ── */
-  .symptom-body { padding: 72px 5%; background: var(--cream); }
   .ai-container { background: var(--white); border-radius: 24px; padding: 48px; max-width: 760px; margin: 0 auto; border: 1px solid var(--cream-dark); }
   .ai-title { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--text-dark); margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
   .ai-badge { font-size: 11px; background: var(--green-accent); color: white; padding: 4px 10px; border-radius: 20px; font-family: 'DM Sans', sans-serif; font-weight: 500; }
@@ -387,7 +384,7 @@
 <!-- ── NAV ── -->
 <nav>
   <a class="nav-logo" onclick="navigate('home')">
-    <div class="nav-logo-icon"><img src="images/logo.jpg" alt="Kenji Vet Logo" style="width:40px; height:40px; border-radius:50%; object-fit:cover;"></div>
+    <div class="nav-logo-icon">🐾</div>
     <div class="nav-logo-text">Kenji Vet Services<span>Mixed Veterinary Practice</span></div>
   </a>
   <ul class="nav-links">
@@ -395,7 +392,6 @@
     <li><a onclick="navigate('about')" data-page="about">About</a></li>
     <li><a onclick="navigate('services')" data-page="services">Services</a></li>
     <li><a onclick="navigate('animals')" data-page="animals">Animals</a></li>
-    <li><a onclick="navigate('symptom')" data-page="symptom">Symptom Check</a></li>
     <li><a onclick="navigate('gallery')" data-page="gallery">Gallery</a></li>
     <li><a onclick="navigate('contact')" data-page="contact">Contact</a></li>
     <li><a onclick="navigate('appointment')" class="nav-cta" data-page="appointment">Book Now</a></li>
@@ -411,7 +407,6 @@
   <a onclick="navigate('about');closeMobileMenu()" data-page="about">About</a>
   <a onclick="navigate('services');closeMobileMenu()" data-page="services">Services</a>
   <a onclick="navigate('animals');closeMobileMenu()" data-page="animals">Animals</a>
-  <a onclick="navigate('symptom');closeMobileMenu()" data-page="symptom">Symptom Check</a>
   <a onclick="navigate('gallery');closeMobileMenu()" data-page="gallery">Gallery</a>
   <a onclick="navigate('contact');closeMobileMenu()" data-page="contact">Contact</a>
   <a onclick="navigate('appointment');closeMobileMenu()" class="mob-cta" data-page="appointment">📅 Book an Appointment</a>
@@ -466,12 +461,6 @@
         <p>Dogs, cattle, reptiles, exotic birds and much more.</p>
         <div class="hnc-arrow">See all species →</div>
       </div>
-      <div class="home-nav-card" onclick="navigate('symptom')">
-        <div class="hnc-icon">🔍</div>
-        <h3>Symptom Checker</h3>
-        <p>AI-powered preliminary assessment for your pet's symptoms.</p>
-        <div class="hnc-arrow">Check now →</div>
-      </div>
       <div class="home-nav-card" onclick="navigate('appointment')">
         <div class="hnc-icon">📅</div>
         <h3>Book an Appointment</h3>
@@ -501,56 +490,6 @@
     </div>
   </div>
 
-  <!-- Animal Quotes -->
-<section style="padding: 60px 5%; text-align: center; background: var(--green-dark);">
-  <div style="position: relative; min-height: 160px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-    <div id="quote-display" style="transition: opacity 0.6s ease;">
-      <div style="font-size: 48px; margin-bottom: 12px;" id="quote-emoji">🐾</div>
-      <p id="quote-text" style="font-size: 18px; font-style: italic; color: var(--cream); line-height: 1.7; max-width: 520px; margin: 0 auto 12px;"></p>
-      <p id="quote-author" style="font-size: 13px; color: var(--gold); letter-spacing: 1px; text-transform: uppercase;"></p>
-    </div>
-  </div>
-  <div style="display: flex; gap: 8px; justify-content: center; margin-top: 1.5rem;" id="dots"></div>
-</section>
-
-<script>
-const quotes = [
-  { emoji: "🐕", text: "Until one has loved an animal, a part of one's soul remains unawakened.", author: "Anatole France" },
-  { emoji: "🐘", text: "The greatness of a nation can be judged by the way its animals are treated.", author: "Mahatma Gandhi" },
-  { emoji: "🦁", text: "Animals are such agreeable friends — they ask no questions; they pass no criticisms.", author: "George Eliot" },
-  { emoji: "🐴", text: "The love for all living creatures is the most noble attribute of man.", author: "Charles Darwin" },
-  { emoji: "🦜", text: "Animals share with us the privilege of having a soul.", author: "Pythagoras" }
-];
-let current = 0; let timer;
-const textEl = document.getElementById('quote-text');
-const authorEl = document.getElementById('quote-author');
-const emojiEl = document.getElementById('quote-emoji');
-const display = document.getElementById('quote-display');
-const dotsEl = document.getElementById('dots');
-function renderDots() {
-  dotsEl.innerHTML = '';
-  quotes.forEach((_, i) => {
-    const dot = document.createElement('div');
-    dot.style.cssText = `width:8px;height:8px;border-radius:50%;background:${i === current ? 'var(--gold)' : 'rgba(245,240,232,0.3)'};cursor:pointer;transition:background 0.3s;`;
-    dot.onclick = () => { clearInterval(timer); showQuote(i); startTimer(); };
-    dotsEl.appendChild(dot);
-  });
-}
-function showQuote(index) {
-  display.style.opacity = '0';
-  setTimeout(() => {
-    current = index;
-    textEl.textContent = `"${quotes[current].text}"`;
-    authorEl.textContent = `— ${quotes[current].author}`;
-    emojiEl.textContent = quotes[current].emoji;
-    display.style.opacity = '1';
-    renderDots();
-  }, 300);
-}
-function startTimer() { timer = setInterval(() => { showQuote((current + 1) % quotes.length); }, 4000); }
-showQuote(0); startTimer();
-</script>
-
   <!-- Testimonials -->
   <section class="home-testi">
     <div class="home-testi-header">
@@ -566,11 +505,11 @@ showQuote(0); startTimer();
   <footer id="footer-home">
     <div class="footer-top">
       <div>
-        <div class="nav-logo" style="cursor:default"><img src="images/logo.jpg" alt="Kenji Vet Logo" style="width:40px; height:40px; border-radius:50%; object-fit:cover;"><div class="nav-logo-text">Kenji Vet Services<span>Mixed Veterinary Practice</span></div></div>
+        <div class="nav-logo" style="cursor:default"><div class="nav-logo-icon">🐾</div><div class="nav-logo-text">Kenji Vet Services<span>Mixed Veterinary Practice</span></div></div>
         <p class="footer-brand-desc">Bringing expert, compassionate animal healthcare directly to your doorstep — for every creature, big and small.</p>
         <div class="footer-socials"><a href="#" class="footer-social">f</a><a href="#" class="footer-social">in</a><a href="#" class="footer-social">ig</a><a href="#" class="footer-social">wa</a></div>
       </div>
-      <div class="footer-col"><h4>Pages</h4><ul><li><a onclick="navigate('about')">About Us</a></li><li><a onclick="navigate('services')">Services</a></li><li><a onclick="navigate('animals')">Animals</a></li><li><a onclick="navigate('symptom')">Symptom Checker</a></li><li><a onclick="navigate('appointment')">Book Appointment</a></li><li><a onclick="navigate('contact')">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Pages</h4><ul><li><a onclick="navigate('about')">About Us</a></li><li><a onclick="navigate('services')">Services</a></li><li><a onclick="navigate('animals')">Animals</a></li><li><a onclick="navigate('appointment')">Book Appointment</a></li><li><a onclick="navigate('contact')">Contact</a></li></ul></div>
       <div class="footer-col"><h4>Services</h4><ul><li><a onclick="navigate('services')">General Consultations</a></li><li><a onclick="navigate('services')">Exotic Animal Care</a></li><li><a onclick="navigate('services')">Farm & Livestock</a></li><li><a onclick="navigate('services')">Diagnostics</a></li><li><a onclick="navigate('services')">Surgery</a></li><li><a onclick="navigate('services')">Vaccinations</a></li></ul></div>
       <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+254701973149">+254 701 973 149</a></li><li><a href="mailto:drkennedymurimi1@gmail.com">drkennedymurimi1@gmail.com</a></li><li><a href="#">Nairobi, Kenya</a></li><li><a href="#">Emergency: 24/7</a></li></ul></div>
     </div>
@@ -629,11 +568,11 @@ showQuote(0); startTimer();
   <footer>
     <div class="footer-top">
       <div>
-        <div class="nav-logo" style="cursor:default"><img src="images/logo.jpg" alt="Kenji Vet Logo" style="width:40px; height:40px; border-radius:50%; object-fit:cover;"></div><div class="nav-logo-text">Kenji Vet Services<span>Mixed Veterinary Practice</span></div></div>
+        <div class="nav-logo" style="cursor:default"><div class="nav-logo-icon">🐾</div><div class="nav-logo-text">Kenji Vet Services<span>Mixed Veterinary Practice</span></div></div>
         <p class="footer-brand-desc">Bringing expert, compassionate animal healthcare directly to your doorstep.</p>
         <div class="footer-socials"><a href="#" class="footer-social">f</a><a href="#" class="footer-social">in</a><a href="#" class="footer-social">ig</a><a href="#" class="footer-social">wa</a></div>
       </div>
-      <div class="footer-col"><h4>Pages</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('services')">Services</a></li><li><a onclick="navigate('animals')">Animals</a></li><li><a onclick="navigate('symptom')">Symptom Checker</a></li><li><a onclick="navigate('appointment')">Book Appointment</a></li><li><a onclick="navigate('contact')">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Pages</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('services')">Services</a></li><li><a onclick="navigate('animals')">Animals</a></li><li><a onclick="navigate('appointment')">Book Appointment</a></li><li><a onclick="navigate('contact')">Contact</a></li></ul></div>
       <div class="footer-col"><h4>Services</h4><ul><li><a onclick="navigate('services')">General Consultations</a></li><li><a onclick="navigate('services')">Exotic Animal Care</a></li><li><a onclick="navigate('services')">Farm & Livestock</a></li><li><a onclick="navigate('services')">Diagnostics</a></li></ul></div>
       <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+254701973149">+254 701 973 149</a></li><li><a href="mailto:drkennedymurimi1@gmail.com">drkennedymurimi1@gmail.com</a></li><li><a href="#">Nairobi, Kenya</a></li><li><a href="#">Emergency: 24/7</a></li></ul></div>
     </div>
@@ -679,11 +618,11 @@ showQuote(0); startTimer();
   <footer>
     <div class="footer-top">
       <div>
-        <div class="nav-logo" style="cursor:default"><img src="images/logo.jpg" alt="Kenji Vet Logo" style="width:40px; height:40px; border-radius:50%; object-fit:cover;"></div><div class="nav-logo-text">Kenji Vet Services<span>Mixed Veterinary Practice</span></div></div>
+        <div class="nav-logo" style="cursor:default"><div class="nav-logo-icon">🐾</div><div class="nav-logo-text">Kenji Vet Services<span>Mixed Veterinary Practice</span></div></div>
         <p class="footer-brand-desc">Bringing expert, compassionate animal healthcare directly to your doorstep.</p>
         <div class="footer-socials"><a href="#" class="footer-social">f</a><a href="#" class="footer-social">in</a><a href="#" class="footer-social">ig</a><a href="#" class="footer-social">wa</a></div>
       </div>
-      <div class="footer-col"><h4>Pages</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('about')">About</a></li><li><a onclick="navigate('animals')">Animals</a></li><li><a onclick="navigate('symptom')">Symptom Checker</a></li><li><a onclick="navigate('appointment')">Book Appointment</a></li><li><a onclick="navigate('contact')">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Pages</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('about')">About</a></li><li><a onclick="navigate('animals')">Animals</a></li><li><a onclick="navigate('appointment')">Book Appointment</a></li><li><a onclick="navigate('contact')">Contact</a></li></ul></div>
       <div class="footer-col"><h4>Services</h4><ul><li><a>General Consultations</a></li><li><a>Exotic Animal Care</a></li><li><a>Farm & Livestock</a></li><li><a>Diagnostics</a></li><li><a>Surgery</a></li><li><a>Vaccinations</a></li></ul></div>
       <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+254701973149">+254 701 973 149</a></li><li><a href="mailto:drkennedymurimi1@gmail.com">drkennedymurimi1@gmail.com</a></li><li><a>Nairobi, Kenya</a></li><li><a>Emergency: 24/7</a></li></ul></div>
     </div>
@@ -741,73 +680,18 @@ showQuote(0); startTimer();
     <h2>Don't see your animal?</h2>
     <p>We treat many more species than listed — call us to discuss your animal's specific needs.</p>
     <a onclick="navigate('contact')" class="btn-primary" style="cursor:pointer; margin-right:16px;">Contact Us</a>
-    <a onclick="navigate('symptom')" class="btn-outline" style="cursor:pointer;">Check Symptoms</a>
+    <a onclick="navigate('appointment')" class="btn-outline" style="cursor:pointer;">Book a Visit</a>
   </div>
 
   <footer>
     <div class="footer-top">
       <div>
-        <div class="nav-logo" style="cursor:default"><img src="images/logo.jpg" alt="Kenji Vet Logo" style="width:40px; height:40px; border-radius:50%; object-fit:cover;"></div><div class="nav-logo-text">Kenji Vet Services<span>Mixed Veterinary Practice</span></div></div>
+        <div class="nav-logo" style="cursor:default"><div class="nav-logo-icon">🐾</div><div class="nav-logo-text">Kenji Vet Services<span>Mixed Veterinary Practice</span></div></div>
         <p class="footer-brand-desc">Bringing expert, compassionate animal healthcare directly to your doorstep.</p>
         <div class="footer-socials"><a href="#" class="footer-social">f</a><a href="#" class="footer-social">in</a><a href="#" class="footer-social">ig</a><a href="#" class="footer-social">wa</a></div>
       </div>
-      <div class="footer-col"><h4>Pages</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('about')">About</a></li><li><a onclick="navigate('services')">Services</a></li><li><a onclick="navigate('symptom')">Symptom Checker</a></li><li><a onclick="navigate('appointment')">Book Appointment</a></li><li><a onclick="navigate('contact')">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Pages</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('about')">About</a></li><li><a onclick="navigate('services')">Services</a></li><li><a onclick="navigate('appointment')">Book Appointment</a></li><li><a onclick="navigate('contact')">Contact</a></li></ul></div>
       <div class="footer-col"><h4>Species</h4><ul><li><a>Dogs & Cats</a></li><li><a>Birds & Reptiles</a></li><li><a>Cattle & Livestock</a></li><li><a>Exotic Mammals</a></li></ul></div>
-      <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+254701973149">+254 701 973 149</a></li><li><a href="mailto:drkennedymurimi1@gmail.com">drkennedymurimi1@gmail.com</a></li><li><a>Nairobi, Kenya</a></li></ul></div>
-    </div>
-    <div class="footer-bottom"><p>© 2025 Kenji Vet Services. All rights reserved.</p><p><a href="#">Privacy</a> · <a href="#">Terms</a></p></div>
-  </footer>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     PAGE: SYMPTOM CHECKER
-════════════════════════════════════════════ -->
-<div class="page" id="page-symptom">
-  <div class="page-header">
-    <div class="page-header-content">
-      <div class="breadcrumb">Home › <span>Symptom Checker</span></div>
-      <h1>Check your pet's<br><em>symptoms instantly.</em></h1>
-      <p>Describe what you're seeing and our AI assistant will give you a preliminary assessment and next-step guidance.</p>
-    </div>
-  </div>
-
-  <section class="symptom-body">
-    <div class="ai-container">
-      <div class="ai-title">Symptom Checker <span class="ai-badge">AI Powered</span></div>
-      <div class="ai-sub">Fill in the details below for an instant AI assessment. This does not replace a professional veterinary consultation.</div>
-      <div class="ai-form-row">
-        <div class="ai-form-group"><label>Pet's Name</label><input type="text" id="pet-name" placeholder="e.g. Max"></div>
-        <div class="ai-form-group"><label>Species</label>
-          <select id="pet-species"><option value="">Select species...</option><option>Dog</option><option>Cat</option><option>Bird / Parrot</option><option>Rabbit</option><option>Reptile</option><option>Cattle</option><option>Goat</option><option>Other</option></select>
-        </div>
-      </div>
-      <div class="ai-form-row">
-        <div class="ai-form-group"><label>Age</label><input type="text" id="pet-age" placeholder="e.g. 3 years"></div>
-        <div class="ai-form-group"><label>Duration of symptoms</label><input type="text" id="duration" placeholder="e.g. 2 days"></div>
-      </div>
-      <div class="ai-form-group" style="margin-bottom:20px;"><label>Describe the symptoms</label><textarea id="symptoms" placeholder="e.g. Not eating, lethargic, slight discharge from eyes..."></textarea></div>
-      <button class="btn-primary" onclick="checkSymptoms()" style="width:100%;">Analyse Symptoms →</button>
-      <div class="ai-loading" id="ai-loading"><div class="ai-spinner"></div><span>Analysing symptoms with AI...</span></div>
-      <div class="ai-result" id="ai-result">
-        <div class="ai-result-header">🔍 AI Assessment</div>
-        <div class="ai-result-text" id="ai-result-text"></div>
-        <div class="ai-result-disclaimer">⚠️ AI-generated preliminary assessment only. Always consult a qualified veterinarian. Call us on +254 701 973 149.</div>
-      </div>
-    </div>
-    <div style="max-width:760px; margin:32px auto 0; text-align:center;">
-      <p style="font-size:14px; color:var(--text-light); font-weight:300;">Concerned after reading the assessment? <a onclick="navigate('appointment')" style="color:var(--green-accent); cursor:pointer; font-weight:500;">Book a visit</a> or call <a href="tel:+254701973149" style="color:var(--green-accent); font-weight:500;">+254 701 973 149</a> for immediate assistance.</p>
-    </div>
-  </section>
-
-  <footer>
-    <div class="footer-top">
-      <div>
-        <div class="nav-logo" style="cursor:default"><img src="images/logo.jpg" alt="Kenji Vet Logo" style="width:40px; height:40px; border-radius:50%; object-fit:cover;"></div><div class="nav-logo-text">Kenji Vet Services<span>Mixed Veterinary Practice</span></div></div>
-        <p class="footer-brand-desc">Bringing expert, compassionate animal healthcare directly to your doorstep.</p>
-        <div class="footer-socials"><a href="#" class="footer-social">f</a><a href="#" class="footer-social">in</a><a href="#" class="footer-social">ig</a><a href="#" class="footer-social">wa</a></div>
-      </div>
-      <div class="footer-col"><h4>Pages</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('about')">About</a></li><li><a onclick="navigate('services')">Services</a></li><li><a onclick="navigate('animals')">Animals</a></li><li><a onclick="navigate('appointment')">Book Appointment</a></li><li><a onclick="navigate('contact')">Contact</a></li></ul></div>
-      <div class="footer-col"><h4>Get Help Now</h4><ul><li><a onclick="navigate('appointment')">Book a Visit</a></li><li><a href="tel:+254701973149">Call Emergency Line</a></li><li><a href="https://wa.me/254701973149">WhatsApp Us</a></li></ul></div>
       <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+254701973149">+254 701 973 149</a></li><li><a href="mailto:drkennedymurimi1@gmail.com">drkennedymurimi1@gmail.com</a></li><li><a>Nairobi, Kenya</a></li></ul></div>
     </div>
     <div class="footer-bottom"><p>© 2025 Kenji Vet Services. All rights reserved.</p><p><a href="#">Privacy</a> · <a href="#">Terms</a></p></div>
@@ -855,11 +739,11 @@ showQuote(0); startTimer();
   <footer>
     <div class="footer-top">
       <div>
-      <div class="nav-logo" style="cursor:default"><img src="images/logo.jpg" alt="Kenji Vet Logo" style="width:40px; height:40px; border-radius:50%; object-fit:cover;"><div class="nav-logo-text">Kenji Vet Services<span>Mixed Veterinary Practice</span></div></div>
+        <div class="nav-logo" style="cursor:default"><div class="nav-logo-icon">🐾</div><div class="nav-logo-text">Kenji Vet Services<span>Mixed Veterinary Practice</span></div></div>
         <p class="footer-brand-desc">Bringing expert, compassionate animal healthcare directly to your doorstep.</p>
         <div class="footer-socials"><a href="#" class="footer-social">f</a><a href="#" class="footer-social">in</a><a href="#" class="footer-social">ig</a><a href="#" class="footer-social">wa</a></div>
       </div>
-      <div class="footer-col"><h4>Pages</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('about')">About</a></li><li><a onclick="navigate('services')">Services</a></li><li><a onclick="navigate('animals')">Animals</a></li><li><a onclick="navigate('symptom')">Symptom Checker</a></li><li><a onclick="navigate('contact')">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Pages</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('about')">About</a></li><li><a onclick="navigate('services')">Services</a></li><li><a onclick="navigate('animals')">Animals</a></li><li><a onclick="navigate('contact')">Contact</a></li></ul></div>
       <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+254701973149">+254 701 973 149</a></li><li><a href="https://wa.me/254701973149">WhatsApp</a></li><li><a href="mailto:drkennedymurimi1@gmail.com">drkennedymurimi1@gmail.com</a></li><li><a>Emergency: 24/7</a></li></ul></div>
       <div class="footer-col"><h4>Hours</h4><ul><li><a>Mon–Fri: 7am – 7pm</a></li><li><a>Saturday: 8am – 4pm</a></li><li><a>Emergency: Always Open</a></li></ul></div>
     </div>
@@ -912,11 +796,11 @@ showQuote(0); startTimer();
   <footer>
     <div class="footer-top">
       <div>
-        <div class="nav-logo" style="cursor:default"><img src="images/logo.jpg" alt="Kenji Vet Logo" style="width:40px; height:40px; border-radius:50%; object-fit:cover;"></div><div class="nav-logo-text">Kenji Vet Services<span>Mixed Veterinary Practice</span></div></div>
+        <div class="nav-logo" style="cursor:default"><div class="nav-logo-icon">🐾</div><div class="nav-logo-text">Kenji Vet Services<span>Mixed Veterinary Practice</span></div></div>
         <p class="footer-brand-desc">Bringing expert, compassionate animal healthcare directly to your doorstep.</p>
         <div class="footer-socials"><a href="#" class="footer-social">f</a><a href="#" class="footer-social">in</a><a href="#" class="footer-social">ig</a><a href="#" class="footer-social">wa</a></div>
       </div>
-      <div class="footer-col"><h4>Pages</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('about')">About</a></li><li><a onclick="navigate('services')">Services</a></li><li><a onclick="navigate('animals')">Animals</a></li><li><a onclick="navigate('symptom')">Symptom Checker</a></li><li><a onclick="navigate('appointment')">Book Appointment</a></li></ul></div>
+      <div class="footer-col"><h4>Pages</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('about')">About</a></li><li><a onclick="navigate('services')">Services</a></li><li><a onclick="navigate('animals')">Animals</a></li><li><a onclick="navigate('appointment')">Book Appointment</a></li></ul></div>
       <div class="footer-col"><h4>Services</h4><ul><li><a onclick="navigate('services')">General Consultations</a></li><li><a onclick="navigate('services')">Exotic Animal Care</a></li><li><a onclick="navigate('services')">Farm & Livestock</a></li><li><a onclick="navigate('services')">Diagnostics</a></li></ul></div>
       <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+254701973149">+254 701 973 149</a></li><li><a href="mailto:drkennedymurimi1@gmail.com">drkennedymurimi1@gmail.com</a></li><li><a>Nairobi, Kenya</a></li><li><a>Emergency: 24/7</a></li></ul></div>
     </div>
@@ -926,7 +810,7 @@ showQuote(0); startTimer();
 
 <script>
 // ── ROUTER ──────────────────────────────────────────
-const pages = ['home','about','services','animals','symptom','appointment','contact','gallery'];
+const pages = ['home','about','services','animals','appointment','contact','gallery'];
 
 function navigate(page) {
   // Hide all pages
@@ -963,38 +847,6 @@ function toggleMobileMenu() {
 }
 function closeMobileMenu() {
   document.getElementById('mobile-menu').classList.remove('open');
-}
-
-// ── AI SYMPTOM CHECKER ──────────────────────────────
-async function checkSymptoms() {
-  const name     = document.getElementById('pet-name').value;
-  const species  = document.getElementById('pet-species').value;
-  const age      = document.getElementById('pet-age').value;
-  const duration = document.getElementById('duration').value;
-  const symptoms = document.getElementById('symptoms').value;
-  if (!species || !symptoms) { alert('Please select a species and describe the symptoms.'); return; }
-
-  const loading = document.getElementById('ai-loading');
-  const result  = document.getElementById('ai-result');
-  result.classList.remove('show');
-  loading.classList.add('show');
-
-  try {
-    const prompt = `You are a veterinary assistant at Kenji Vet Services, a mixed veterinary practice in Kenya specialising in exotic, pet and farm animals.\n\nA client has described the following:\n- Animal: ${name ? name + ', a' : 'A'} ${species}\n- Age: ${age || 'unknown'}\n- Duration of symptoms: ${duration || 'not specified'}\n- Symptoms: ${symptoms}\n\nProvide:\n1. A brief preliminary assessment of possible causes (2-3 sentences)\n2. Urgency level: Routine / Moderate / Urgent / Emergency\n3. Immediate home care tips (1-2 practical points)\n4. Clear recommendation to book with Kenji Vet Services\n\nKeep it concise, warm and professional. Plain text only, no markdown.`;
-
-    const response = await fetch('/api/symptom-check', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt })
-    });
-    const data = await response.json();
-    document.getElementById('ai-result-text').textContent = data.result;
-    result.classList.add('show');
-  } catch (e) {
-    document.getElementById('ai-result-text').textContent = 'Our AI assistant is temporarily unavailable. Please call us on +254 701 973 149 for immediate assistance.';
-    result.classList.add('show');
-  }
-  loading.classList.remove('show');
 }
 
 // ── CONTACT FORM ────────────────────────────────────
@@ -1102,8 +954,7 @@ async function bookAppointment() {
       </div>
       <div class="footer-col"><h4>Pages</h4><ul>
         <li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('about')">About</a></li>
-        <li><a onclick="navigate('services')">Services</a></li><li><a onclick="navigate('animals')">Animals</a></li>
-        <li><a onclick="navigate('symptom')">Symptom Checker</a></li><li><a onclick="navigate('appointment')">Book Appointment</a></li>
+        <li><a onclick="navigate('services')">Services</a></li><li><a onclick="navigate('animals')">Animals</a></li><li><a onclick="navigate('appointment')">Book Appointment</a></li>
         <li><a onclick="navigate('contact')">Contact</a></li>
       </ul></div>
       <div class="footer-col"><h4>Services</h4><ul>
